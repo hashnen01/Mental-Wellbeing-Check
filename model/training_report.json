@@ -1,0 +1,53 @@
+{
+  "best_model": "Linear Regression",
+  "results": {
+    "Linear Regression": {
+      "MAE": 7.7104,
+      "RMSE": 9.7816,
+      "R2": 0.3866
+    },
+    "Random Forest": {
+      "MAE": 8.0342,
+      "RMSE": 10.134,
+      "R2": 0.3416
+    },
+    "XGBoost": {
+      "MAE": 7.7745,
+      "RMSE": 9.8651,
+      "R2": 0.3761
+    }
+  },
+  "feature_count": 30,
+  "features": [
+    "age",
+    "sleep_hours",
+    "night_awakenings",
+    "physical_activity_mins",
+    "outdoor_time_mins",
+    "sedentary_hours",
+    "water_intake_L",
+    "meals_skipped",
+    "junk_food_days_per_week",
+    "meaningful_conversations_per_day",
+    "social_media_hours",
+    "social_isolation_score",
+    "work_study_hours",
+    "stressful_events_today",
+    "mood_stability",
+    "concentration_difficulty",
+    "purpose_in_life",
+    "hobby_time_mins",
+    "days_since_last_vacation",
+    "bmi",
+    "gender",
+    "occupation",
+    "sleep_consistency",
+    "smoking",
+    "alcohol_consumption",
+    "sleep_quality_score",
+    "physical_activity_score",
+    "nutrition_score",
+    "social_connection_score",
+    "daily_balance_score"
+  ]
+}

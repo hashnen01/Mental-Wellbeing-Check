@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}History — Wellbeing Check{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="section-heading text-center mb-4">Assessment History</h1>
+
+    {% if assessments %}
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table history-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Overall Score</th>
+                            <th>Risk Level</th>
+                            <th>😴 Sleep</th>
+                            <th>🏃 Activity</th>
+                            <th>🍎 Nutrition</th>
+                            <th>👥 Social</th>
+                            <th>🧠 Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in assessments %}
+                        <tr>
+                            <td>{{ loop.revindex }}</td>
+                            <td>{{ a.date }}</td>
+                            <td><strong>{{ a.overall_score }}</strong></td>
+                            <td>
+                                {% if a.risk_level == 'Excellent' %}
+                                    <span class="badge badge-risk-success">🟢 {{ a.risk_level }}</span>
+                                {% elif a.risk_level == 'Good' %}
+                                    <span class="badge badge-risk-success">🟢 {{ a.risk_level }}</span>
+                                {% elif a.risk_level == 'Fair' %}
+                                    <span class="badge badge-risk-warning">🟡 {{ a.risk_level }}</span>
+                                {% elif a.risk_level == 'Needs Attention' %}
+                                    <span class="badge badge-risk-orange">🟠 {{ a.risk_level }}</span>
+                                {% else %}
+                                    <span class="badge badge-risk-danger">🔴 {{ a.risk_level }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ a.sleep_score | int }}</td>
+                            <td>{{ a.activity_score | int }}</td>
+                            <td>{{ a.nutrition_score | int }}</td>
+                            <td>{{ a.social_score | int }}</td>
+                            <td>{{ a.balance_score | int }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <form method="POST" action="{{ url_for('handle_clear_history') }}"
+              onsubmit="return confirm('Are you sure you want to delete all history?');">
+            <button type="submit" class="btn btn-outline-danger btn-sm" id="btn-clear-history">
+                <i class="bi bi-trash me-1"></i> Clear History
+            </button>
+        </form>
+    </div>
+
+    {% else %}
+    <div class="text-center py-5">
+        <div class="fs-1 mb-3">📋</div>
+        <p class="text-muted fs-5">No assessments yet.</p>
+        <a href="{{ url_for('assess') }}" class="btn btn-primary" id="btn-take-first">
+            Take Your First Assessment
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

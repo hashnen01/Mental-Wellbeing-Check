@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+{% block title %}Assessment — Wellbeing Check{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="text-center mb-4">
+        <h1 class="section-heading">Wellbeing Assessment</h1>
+        <p class="text-muted">Tell us about your day across 3 simple steps. All fields are required.</p>
+    </div>
+
+    <!-- Validation Errors -->
+    {% if errors %}
+    <div class="alert alert-danger mb-4" role="alert">
+        <strong>Please fix the following issues:</strong>
+        <ul class="mb-0 mt-1">
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Step Progress Indicator -->
+    <div class="wizard-progress-container mb-4">
+        <div class="wizard-progress-bar" id="wizard-progress-bar" style="width: 33.33%;"></div>
+        <div class="wizard-steps-header">
+            <div class="wizard-step-pill active" id="step-pill-1" onclick="jumpToStep(1)">
+                <span class="step-num">1</span>
+                <span class="step-label">About You & Sleep</span>
+            </div>
+            <div class="wizard-step-pill" id="step-pill-2" onclick="jumpToStep(2)">
+                <span class="step-num">2</span>
+                <span class="step-label">Activity & Nutrition</span>
+            </div>
+            <div class="wizard-step-pill" id="step-pill-3" onclick="jumpToStep(3)">
+                <span class="step-num">3</span>
+                <span class="step-label">Social, Habits & Mood</span>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('assess') }}" id="assessment-form" novalidate>
+
+        <!-- STEP 1: About You & Sleep -->
+        <div class="wizard-step active" id="step-1">
+            <div class="step-title-banner mb-3">
+                <i class="bi bi-person-fill text-primary"></i> Step 1 of 3: About You & Sleep
+            </div>
+            <div class="row g-4">
+                <!-- About You -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">👤 About You</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" name="age"
+                                       min="10" max="100" placeholder="e.g., 25" required
+                                       value="{{ form_data.get('age', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="">Select</option>
+                                    {% set gv = form_data.get('gender', '') if form_data else '' %}
+                                    <option value="Male" {{ 'selected' if gv == 'Male' }}>Male</option>
+                                    <option value="Female" {{ 'selected' if gv == 'Female' }}>Female</option>
+                                    <option value="Non-binary" {{ 'selected' if gv == 'Non-binary' }}>Non-binary</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="occupation" class="form-label">Occupation</label>
+                                <select class="form-select" id="occupation" name="occupation" required>
+                                    <option value="">Select</option>
+                                    {% set ov = form_data.get('occupation', '') if form_data else '' %}
+                                    <option value="Student" {{ 'selected' if ov == 'Student' }}>Student</option>
+                                    <option value="Employed_Full_Time" {{ 'selected' if ov == 'Employed_Full_Time' }}>Employed (Full Time)</option>
+                                    <option value="Employed_Part_Time" {{ 'selected' if ov == 'Employed_Part_Time' }}>Employed (Part Time)</option>
+                                    <option value="Self_Employed" {{ 'selected' if ov == 'Self_Employed' }}>Self Employed</option>
+                                    <option value="Unemployed" {{ 'selected' if ov == 'Unemployed' }}>Unemployed</option>
+                                    <option value="Retired" {{ 'selected' if ov == 'Retired' }}>Retired</option>
+                                    <option value="Homemaker" {{ 'selected' if ov == 'Homemaker' }}>Homemaker</option>
+                                </select>
+                            </div>
+                            <div class="mb-0">
+                                <label for="bmi" class="form-label">BMI</label>
+                                <input type="number" class="form-control" id="bmi" name="bmi"
+                                       min="10" max="60" step="0.1" placeholder="e.g., 24.5" required
+                                       value="{{ form_data.get('bmi', '') if form_data else '' }}">
+                                <div class="form-text">Body Mass Index (weight in kg / height in m²)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sleep -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">😴 Sleep</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="sleep_hours" class="form-label">Hours of sleep last night</label>
+                                <input type="number" class="form-control" id="sleep_hours" name="sleep_hours"
+                                       min="0" max="24" step="0.1" placeholder="e.g., 7.5" required
+                                       value="{{ form_data.get('sleep_hours', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sleep_consistency" class="form-label">Do you sleep at the same time every day?</label>
+                                <select class="form-select" id="sleep_consistency" name="sleep_consistency" required>
+                                    <option value="">Select</option>
+                                    {% set sv = form_data.get('sleep_consistency', '') if form_data else '' %}
+                                    <option value="Yes" {{ 'selected' if sv == 'Yes' }}>Yes</option>
+                                    <option value="No" {{ 'selected' if sv == 'No' }}>No</option>
+                                </select>
+                            </div>
+                            <div class="mb-0">
+                                <label for="night_awakenings" class="form-label">Times you woke up during the night</label>
+                                <input type="number" class="form-control" id="night_awakenings" name="night_awakenings"
+                                       min="0" max="20" placeholder="e.g., 1" required
+                                       value="{{ form_data.get('night_awakenings', '') if form_data else '' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: Activity & Nutrition -->
+        <div class="wizard-step" id="step-2">
+            <div class="step-title-banner mb-3">
+                <i class="bi bi-activity text-primary"></i> Step 2 of 3: Activity & Nutrition
+            </div>
+            <div class="row g-4">
+                <!-- Physical Activity -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">🏃 Activity</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="physical_activity_mins" class="form-label">Minutes of exercise today</label>
+                                <input type="number" class="form-control" id="physical_activity_mins" name="physical_activity_mins"
+                                       min="0" max="500" placeholder="e.g., 30" required
+                                       value="{{ form_data.get('physical_activity_mins', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="outdoor_time_mins" class="form-label">Minutes spent outdoors</label>
+                                <input type="number" class="form-control" id="outdoor_time_mins" name="outdoor_time_mins"
+                                       min="0" max="500" placeholder="e.g., 45" required
+                                       value="{{ form_data.get('outdoor_time_mins', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-0">
+                                <label for="sedentary_hours" class="form-label">Hours spent sitting</label>
+                                <input type="number" class="form-control" id="sedentary_hours" name="sedentary_hours"
+                                       min="0" max="24" step="0.1" placeholder="e.g., 8" required
+                                       value="{{ form_data.get('sedentary_hours', '') if form_data else '' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nutrition -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">🍎 Nutrition</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="water_intake_L" class="form-label">Litres of water today</label>
+                                <input type="number" class="form-control" id="water_intake_L" name="water_intake_L"
+                                       min="0" max="10" step="0.1" placeholder="e.g., 2.0" required
+                                       value="{{ form_data.get('water_intake_L', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="meals_skipped" class="form-label">Meals skipped today</label>
+                                <select class="form-select" id="meals_skipped" name="meals_skipped" required>
+                                    <option value="">Select</option>
+                                    {% set ms = form_data.get('meals_skipped', '') if form_data else '' %}
+                                    <option value="0" {{ 'selected' if ms == '0' }}>0</option>
+                                    <option value="1" {{ 'selected' if ms == '1' }}>1</option>
+                                    <option value="2" {{ 'selected' if ms == '2' }}>2</option>
+                                    <option value="3" {{ 'selected' if ms == '3' }}>3</option>
+                                </select>
+                            </div>
+                            <div class="mb-0">
+                                <label for="junk_food_days_per_week" class="form-label">Junk food days per week</label>
+                                <select class="form-select" id="junk_food_days_per_week" name="junk_food_days_per_week" required>
+                                    <option value="">Select</option>
+                                    {% set jf = form_data.get('junk_food_days_per_week', '') if form_data else '' %}
+                                    {% for i in range(8) %}
+                                    <option value="{{ i }}" {{ 'selected' if jf == i|string }}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: Social, Habits & Mood -->
+        <div class="wizard-step" id="step-3">
+            <div class="step-title-banner mb-3">
+                <i class="bi bi-heart-pulse text-primary"></i> Step 3 of 3: Social, Habits & Mood
+            </div>
+            <div class="row g-4">
+                <!-- Social Life -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">👥 Social</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="meaningful_conversations_per_day" class="form-label">Meaningful conversations today</label>
+                                <input type="number" class="form-control" id="meaningful_conversations_per_day"
+                                       name="meaningful_conversations_per_day"
+                                       min="0" max="20" placeholder="e.g., 3" required
+                                       value="{{ form_data.get('meaningful_conversations_per_day', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="social_media_hours" class="form-label">Hours on social media</label>
+                                <input type="number" class="form-control" id="social_media_hours" name="social_media_hours"
+                                       min="0" max="24" step="0.1" placeholder="e.g., 2.5" required
+                                       value="{{ form_data.get('social_media_hours', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-0">
+                                <label for="social_isolation_score" class="form-label">How isolated do you feel?</label>
+                                <select class="form-select" id="social_isolation_score" name="social_isolation_score" required>
+                                    <option value="">Select</option>
+                                    {% set si = form_data.get('social_isolation_score', '') if form_data else '' %}
+                                    <option value="1" {{ 'selected' if si == '1' }}>1 — Not isolated at all</option>
+                                    <option value="2" {{ 'selected' if si == '2' }}>2 — Slightly</option>
+                                    <option value="3" {{ 'selected' if si == '3' }}>3 — Somewhat</option>
+                                    <option value="4" {{ 'selected' if si == '4' }}>4 — Quite isolated</option>
+                                    <option value="5" {{ 'selected' if si == '5' }}>5 — Very isolated</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Habits -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">🚬 Habits</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="smoking" class="form-label">Smoking</label>
+                                <select class="form-select" id="smoking" name="smoking" required>
+                                    <option value="">Select</option>
+                                    {% set sm = form_data.get('smoking', '') if form_data else '' %}
+                                    <option value="Never" {{ 'selected' if sm == 'Never' }}>Never</option>
+                                    <option value="Former" {{ 'selected' if sm == 'Former' }}>Former smoker</option>
+                                    <option value="Occasional" {{ 'selected' if sm == 'Occasional' }}>Occasional</option>
+                                    <option value="Daily" {{ 'selected' if sm == 'Daily' }}>Daily</option>
+                                </select>
+                            </div>
+                            <div class="mb-0">
+                                <label for="alcohol_consumption" class="form-label">Alcohol consumption</label>
+                                <select class="form-select" id="alcohol_consumption" name="alcohol_consumption" required>
+                                    <option value="">Select</option>
+                                    {% set ac = form_data.get('alcohol_consumption', '') if form_data else '' %}
+                                    <option value="Never" {{ 'selected' if ac == 'Never' }}>Never</option>
+                                    <option value="Rarely" {{ 'selected' if ac == 'Rarely' }}>Rarely</option>
+                                    <option value="Moderate" {{ 'selected' if ac == 'Moderate' }}>Moderate</option>
+                                    <option value="Heavy" {{ 'selected' if ac == 'Heavy' }}>Heavy</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work & Leisure -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">💼 Work & Leisure</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="work_study_hours" class="form-label">Hours of work or study today</label>
+                                <input type="number" class="form-control" id="work_study_hours" name="work_study_hours"
+                                       min="0" max="24" step="0.1" placeholder="e.g., 8" required
+                                       value="{{ form_data.get('work_study_hours', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="stressful_events_today" class="form-label">Stressful events today</label>
+                                <input type="number" class="form-control" id="stressful_events_today" name="stressful_events_today"
+                                       min="0" max="10" placeholder="e.g., 1" required
+                                       value="{{ form_data.get('stressful_events_today', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="hobby_time_mins" class="form-label">Minutes on hobbies today</label>
+                                <input type="number" class="form-control" id="hobby_time_mins" name="hobby_time_mins"
+                                       min="0" max="500" placeholder="e.g., 30" required
+                                       value="{{ form_data.get('hobby_time_mins', '') if form_data else '' }}">
+                            </div>
+                            <div class="mb-0">
+                                <label for="days_since_last_vacation" class="form-label">Days since last vacation</label>
+                                <input type="number" class="form-control" id="days_since_last_vacation" name="days_since_last_vacation"
+                                       min="0" max="1000" placeholder="e.g., 30" required
+                                       value="{{ form_data.get('days_since_last_vacation', '') if form_data else '' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mood -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header">🧠 Mood & Mind</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="mood_stability" class="form-label">How stable is your mood?</label>
+                                <select class="form-select" id="mood_stability" name="mood_stability" required>
+                                    <option value="">Select</option>
+                                    {% set mo = form_data.get('mood_stability', '') if form_data else '' %}
+                                    <option value="1" {{ 'selected' if mo == '1' }}>1 — Very unstable</option>
+                                    <option value="2" {{ 'selected' if mo == '2' }}>2 — Somewhat unstable</option>
+                                    <option value="3" {{ 'selected' if mo == '3' }}>3 — Neutral</option>
+                                    <option value="4" {{ 'selected' if mo == '4' }}>4 — Mostly stable</option>
+                                    <option value="5" {{ 'selected' if mo == '5' }}>5 — Very stable</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="concentration_difficulty" class="form-label">Difficulty concentrating?</label>
+                                <select class="form-select" id="concentration_difficulty" name="concentration_difficulty" required>
+                                    <option value="">Select</option>
+                                    {% set cd = form_data.get('concentration_difficulty', '') if form_data else '' %}
+                                    <option value="1" {{ 'selected' if cd == '1' }}>1 — No difficulty</option>
+                                    <option value="2" {{ 'selected' if cd == '2' }}>2 — Mild</option>
+                                    <option value="3" {{ 'selected' if cd == '3' }}>3 — Moderate</option>
+                                    <option value="4" {{ 'selected' if cd == '4' }}>4 — Significant</option>
+                                    <option value="5" {{ 'selected' if cd == '5' }}>5 — Extreme</option>
+                                </select>
+                            </div>
+                            <div class="mb-0">
+                                <label for="purpose_in_life" class="form-label">How strong is your sense of purpose?</label>
+                                <select class="form-select" id="purpose_in_life" name="purpose_in_life" required>
+                                    <option value="">Select</option>
+                                    {% set pl = form_data.get('purpose_in_life', '') if form_data else '' %}
+                                    <option value="1" {{ 'selected' if pl == '1' }}>1 — No purpose</option>
+                                    <option value="2" {{ 'selected' if pl == '2' }}>2 — Low</option>
+                                    <option value="3" {{ 'selected' if pl == '3' }}>3 — Moderate</option>
+                                    <option value="4" {{ 'selected' if pl == '4' }}>4 — Good</option>
+                                    <option value="5" {{ 'selected' if pl == '5' }}>5 — Very strong</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Wizard Action Buttons -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <button type="button" class="btn btn-outline-secondary px-4" id="btn-prev" onclick="changeStep(-1)" style="display: none;">
+                <i class="bi bi-arrow-left me-1"></i> Previous
+            </button>
+            <div class="ms-auto">
+                <button type="button" class="btn btn-primary btn-lg px-4" id="btn-next" onclick="changeStep(1)">
+                    Next Step <i class="bi bi-arrow-right ms-1"></i>
+                </button>
+                <button type="submit" class="btn btn-success btn-lg px-5" id="btn-submit" style="display: none;">
+                    Get My Results <i class="bi bi-check-circle ms-1"></i>
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}About — Wellbeing Check{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <h1 class="section-heading text-center mb-4">About This Project</h1>
+
+            <!-- Purpose -->
+            <div class="card mb-4">
+                <div class="card-header"><i class="bi bi-bullseye me-1 text-primary"></i> Purpose</div>
+                <div class="card-body">
+                    <p>
+                        Wellbeing Check is a simple tool that estimates your overall
+                        <strong>Health & Wellbeing Score</strong> based on your daily lifestyle habits.
+                    </p>
+                    <p>
+                        It looks at factors like how well you sleep, how active you are, what you eat,
+                        your social connections, and your work-life balance. These are then combined
+                        into a single score between 0 and 100.
+                    </p>
+                    <p class="mb-0">
+                        The goal is to help you understand how your everyday choices affect
+                        your overall wellbeing, and to give you practical suggestions for improvement.
+                    </p>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <div class="card mb-4">
+                <div class="card-header"><i class="bi bi-gear-fill me-1 text-primary"></i> How Predictions Are Made</div>
+                <div class="card-body">
+                    <p>
+                        This application uses a <strong>Machine Learning regression model</strong>
+                        to estimate the wellbeing score. The process works as follows:
+                    </p>
+                    <ol>
+                        <li class="mb-2">
+                            <strong>Data Collection:</strong> Your responses to the assessment form
+                            are collected as input features.
+                        </li>
+                        <li class="mb-2">
+                            <strong>Feature Engineering:</strong> Five composite scores are calculated
+                            — Sleep Quality, Physical Activity, Nutrition, Social Connection, and Daily Balance.
+                        </li>
+                        <li class="mb-2">
+                            <strong>Prediction:</strong> The trained model processes all features
+                            and outputs a wellbeing score between 0 and 100.
+                        </li>
+                        <li class="mb-2">
+                            <strong>Explanation:</strong> The system identifies which factors
+                            contributed the most to your score, both positively and negatively.
+                        </li>
+                        <li>
+                            <strong>Recommendations:</strong> Based on the factors that are lowering
+                            your score, personalised and practical suggestions are generated.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Machine Learning Summary (Recruiter View) -->
+            <div class="card mb-4">
+                <div class="card-header"><i class="bi bi-cpu-fill me-1 text-primary"></i> Machine Learning Summary</div>
+                <div class="card-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-light rounded text-center h-100">
+                                <div class="text-muted small fw-semibold text-uppercase">Dataset Size</div>
+                                <div class="fs-5 fw-bold text-dark mt-1">20,000</div>
+                                <div class="small text-muted">Records</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-light rounded text-center h-100">
+                                <div class="text-muted small fw-semibold text-uppercase">Features</div>
+                                <div class="fs-5 fw-bold text-dark mt-1">30</div>
+                                <div class="small text-muted">25 Raw + 5 Engineered</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-light rounded text-center h-100">
+                                <div class="text-muted small fw-semibold text-uppercase">Target Variable</div>
+                                <div class="fs-6 fw-bold text-dark mt-1">Score (0–100)</div>
+                                <div class="small text-muted">Continuous Output</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-light rounded text-center h-100">
+                                <div class="text-muted small fw-semibold text-uppercase">Best Model</div>
+                                <div class="fs-6 fw-bold text-primary mt-1">Linear / XGBoost</div>
+                                <div class="small text-muted">Evaluated Suite</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mb-2">Models Evaluated & Comparison</h6>
+                    <p class="small text-muted mb-3">
+                        Three regression algorithms were evaluated using train/test splitting and standardized scaling:
+                    </p>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm align-middle text-center small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-start">Model Algorithm</th>
+                                    <th>MAE</th>
+                                    <th>RMSE</th>
+                                    <th>R² Score</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-success">
+                                    <td class="text-start fw-semibold">Linear Regression</td>
+                                    <td>7.71</td>
+                                    <td>9.78</td>
+                                    <td>0.387</td>
+                                    <td><span class="badge bg-success">Selected</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">XGBoost Regressor</td>
+                                    <td>7.77</td>
+                                    <td>9.87</td>
+                                    <td>0.376</td>
+                                    <td><span class="badge bg-secondary">Evaluated</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">Random Forest Regressor</td>
+                                    <td>8.03</td>
+                                    <td>10.13</td>
+                                    <td>0.342</td>
+                                    <td><span class="badge bg-secondary">Evaluated</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="mb-0 small text-muted mt-2">
+                        <strong>Explainability:</strong> Integrated SHAP (SHapley Additive exPlanations) values decompose predictions
+                        into explicit positive and negative feature contributions for transparent decision-making.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="card border-warning">
+                <div class="card-header text-warning-emphasis bg-warning-subtle">
+                    <i class="bi bi-exclamation-triangle me-1"></i> Important Disclaimer
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        This application is designed for <strong>educational purposes</strong> and is
+                        <strong>not a medical diagnostic tool</strong>. It does not diagnose depression,
+                        anxiety, or any medical condition. It simply provides a lifestyle-based wellbeing
+                        assessment. If you have concerns about your mental health, please consult a
+                        qualified healthcare professional.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

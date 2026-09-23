@@ -1,0 +1,505 @@
+/* ===== Base & Typography ===== */
+
+:root {
+    --primary: #4a90d9;
+    --primary-dark: #3a7bc8;
+    --accent: #3cb5a0;
+    --bg-light: #f5f7fa;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --border-radius: 12px;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+
+/* ===== Navbar ===== */
+
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    padding: 0.75rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary) !important;
+    font-size: 1.25rem;
+}
+
+.nav-link {
+    color: var(--text-dark) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: rgba(74, 144, 217, 0.08);
+    color: var(--primary) !important;
+}
+
+
+/* ===== Hero Section ===== */
+
+.hero {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    padding: 5rem 0 4rem;
+    text-align: center;
+}
+
+.hero h1 {
+    font-weight: 800;
+    font-size: 2.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.hero p.lead {
+    font-size: 1.2rem;
+    opacity: 0.92;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.hero .btn {
+    padding: 0.75rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+}
+
+
+/* ===== Cards ===== */
+
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    background: #fff;
+}
+
+.card-header {
+    background: none;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 1rem 1.25rem;
+    color: var(--text-dark);
+}
+
+
+/* ===== How It Works Section ===== */
+
+.how-it-works .step-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+}
+
+.how-it-works .card {
+    text-align: center;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.how-it-works .card:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ===== Wizard Multistep Assessment ===== */
+
+.wizard-step {
+    display: none;
+}
+
+.wizard-step.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.wizard-progress-container {
+    background: #e9ecef;
+    border-radius: 50px;
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.wizard-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.4s ease;
+}
+
+.wizard-steps-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.wizard-step-pill {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.wizard-step-pill .step-num {
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.wizard-step-pill.active {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(74, 144, 217, 0.3);
+}
+
+.wizard-step-pill.active .step-num {
+    background: #fff;
+    color: var(--primary);
+}
+
+.wizard-step-pill.completed {
+    background: #e8f4fd;
+    color: var(--primary);
+}
+
+.wizard-step-pill.completed .step-num {
+    background: var(--primary);
+    color: #fff;
+}
+
+.step-title-banner {
+    background: #fff;
+    padding: 0.85rem 1.25rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+
+/* ===== Score Display ===== */
+
+.score-circle-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.score-circle {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border: 7px solid;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.score-circle .score-value {
+    font-size: 3.25rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.score-circle .score-label {
+    font-size: 1.15rem;
+    font-weight: 700;
+    opacity: 0.75;
+    margin-top: 2px;
+}
+
+.score-caption {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.score-interpretation {
+    max-width: 620px;
+    margin: 0.75rem auto 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #495057;
+}
+
+.score-circle.risk-success { border-color: #28a745; color: #28a745; }
+.score-circle.risk-info { border-color: #17a2b8; color: #17a2b8; }
+.score-circle.risk-warning { border-color: #ffc107; color: #b78103; }
+.score-circle.risk-orange { border-color: #fd7e14; color: #e06300; }
+.score-circle.risk-danger { border-color: #dc3545; color: #dc3545; }
+
+
+/* ===== Dimension Scores ===== */
+
+.dimension-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dimension-item:last-child {
+    border-bottom: none;
+}
+
+.dimension-emoji {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.dimension-info {
+    flex: 1;
+    margin-left: 0.75rem;
+}
+
+.dimension-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+
+.dimension-bar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dimension-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+.dimension-score {
+    font-weight: 600;
+    font-size: 0.9rem;
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+    color: var(--text-muted);
+}
+
+
+/* ===== SHAP Explanations (Positives & Negatives) ===== */
+
+.explanation-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.65rem 0.85rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.explanation-item.positive {
+    background-color: #f0fdf4;
+    border-left: 4px solid #28a745;
+    color: #1e6b30;
+}
+
+.explanation-item.negative {
+    background-color: #fff9f5;
+    border-left: 4px solid #fd7e14;
+    color: #a34300;
+}
+
+.explanation-icon {
+    font-weight: 700;
+    margin-right: 0.6rem;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+
+/* ===== Recommendations (Top 3 & Additional) ===== */
+
+.top3-badge {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 0.75rem;
+}
+
+.recommendation-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.recommendation-item:last-child {
+    border-bottom: none;
+}
+
+.recommendation-item .rec-icon {
+    color: var(--accent);
+    margin-right: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+
+/* ===== Risk Badges ===== */
+
+.badge-risk-success { background-color: #28a745; color: #fff; }
+.badge-risk-info { background-color: #17a2b8; color: #fff; }
+.badge-risk-warning { background-color: #ffc107; color: #212529; }
+.badge-risk-orange { background-color: #fd7e14; color: #fff; }
+.badge-risk-danger { background-color: #dc3545; color: #fff; }
+
+
+/* ===== Form Styling ===== */
+
+.form-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #dce0e6;
+    padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
+}
+
+.form-text {
+    font-size: 0.8rem;
+}
+
+
+/* ===== History Table ===== */
+
+.history-table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+
+/* ===== Footer ===== */
+
+.site-footer {
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    padding: 1.5rem 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+
+/* ===== Utilities ===== */
+
+.section-heading {
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+
+/* ===== Responsive ===== */
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p.lead {
+        font-size: 1rem;
+    }
+
+    .score-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    .score-circle .score-value {
+        font-size: 2.5rem;
+    }
+
+    .wizard-step-pill .step-label {
+        display: none;
+    }
+}

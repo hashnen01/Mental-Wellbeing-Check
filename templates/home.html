@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Wellbeing Check — Home{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1>Daily Wellbeing Check</h1>
+        <p class="lead">Understand your wellbeing through your daily habits.</p>
+        <a href="{{ url_for('assess') }}" class="btn btn-light btn-lg" id="btn-start-assessment">
+            Start Your Assessment <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works py-5">
+    <div class="container">
+        <h2 class="section-heading text-center mb-4">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="step-icon">
+                            <i class="bi bi-pencil-square"></i>
+                        </div>
+                        <h5>1. Tell us about your day</h5>
+                        <p class="text-muted mb-0">
+                            Share a few quick details about your sleep, activity, nutrition, and daily routine.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="step-icon">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+                        <h5>2. Our ML model analyses your habits</h5>
+                        <p class="text-muted mb-0">
+                            We evaluate your responses across key wellbeing dimensions using our trained model.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="step-icon">
+                            <i class="bi bi-bar-chart-line"></i>
+                        </div>
+                        <h5>3. Receive your wellbeing score and practical suggestions</h5>
+                        <p class="text-muted mb-0">
+                            Get your overall score out of 100, see what affected it, and receive actionable daily tips.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What We Measure -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="section-heading text-center mb-4">Five Dimensions of Wellbeing</h2>
+        <div class="row g-3 justify-content-center">
+            <div class="col-6 col-md-2 text-center">
+                <div class="fs-1">😴</div>
+                <p class="fw-semibold mt-1 mb-0">Sleep</p>
+            </div>
+            <div class="col-6 col-md-2 text-center">
+                <div class="fs-1">🏃</div>
+                <p class="fw-semibold mt-1 mb-0">Activity</p>
+            </div>
+            <div class="col-6 col-md-2 text-center">
+                <div class="fs-1">🍎</div>
+                <p class="fw-semibold mt-1 mb-0">Nutrition</p>
+            </div>
+            <div class="col-6 col-md-2 text-center">
+                <div class="fs-1">👥</div>
+                <p class="fw-semibold mt-1 mb-0">Social</p>
+            </div>
+            <div class="col-6 col-md-2 text-center">
+                <div class="fs-1">🧠</div>
+                <p class="fw-semibold mt-1 mb-0">Balance</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

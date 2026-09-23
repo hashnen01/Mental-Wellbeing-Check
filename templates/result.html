@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Your Results — Wellbeing Check{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Score Section -->
+    <div class="score-circle-wrapper text-center mb-4">
+        <div class="score-circle risk-{{ result.risk_level.color }}">
+            <span class="score-value">{{ result.score | int }}</span>
+            <span class="score-label">/ 100</span>
+        </div>
+        <div>
+            <span class="badge badge-risk-{{ result.risk_level.color }} fs-6 px-3 py-2">
+                {{ result.risk_level.emoji }} {{ result.risk_level.label }}
+            </span>
+        </div>
+        <div class="score-caption">Overall Wellbeing Score</div>
+        {% if result.risk_level.interpretation %}
+        <p class="score-interpretation text-muted mt-3">
+            {{ result.risk_level.interpretation }}
+        </p>
+        {% endif %}
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Dimension Scores -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-speedometer2 me-1 text-primary"></i> Your Wellbeing Dimensions
+                </div>
+                <div class="card-body">
+                    {% for dim in result.dimension_details %}
+                    <div class="dimension-item">
+                        <span class="dimension-emoji">{{ dim.emoji }}</span>
+                        <div class="dimension-info">
+                            <div class="dimension-label">{{ dim.label }}</div>
+                            <div class="dimension-bar">
+                                {% set bar_color = '#28a745' if dim.score >= 60 else '#ffc107' if dim.score >= 40 else '#dc3545' %}
+                                <div class="dimension-bar-fill"
+                                     style="width: {{ dim.score }}%; background-color: {{ bar_color }};"></div>
+                            </div>
+                        </div>
+                        <span class="dimension-score">{{ dim.score | int }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- What Affected Your Score -->
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="bi bi-graph-up-arrow me-1 text-primary"></i> What affected your score
+                </div>
+                <div class="card-body">
+                    {% if result.explanations and (result.explanations.positives or result.explanations.negatives) %}
+
+                        <!-- Things helping your wellbeing -->
+                        {% if result.explanations.positives %}
+                        <div class="mb-3">
+                            <div class="fw-bold text-success mb-2">
+                                <i class="bi bi-check-circle-fill me-1"></i> Things helping your wellbeing
+                            </div>
+                            {% for exp in result.explanations.positives %}
+                            <div class="explanation-item positive">
+                                <span class="explanation-icon">✅</span>
+                                <span>{{ exp.text }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Things lowering your score -->
+                        {% if result.explanations.negatives %}
+                        <div>
+                            <div class="fw-bold text-warning-emphasis mb-2">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Things lowering your score
+                            </div>
+                            {% for exp in result.explanations.negatives %}
+                            <div class="explanation-item negative">
+                                <span class="explanation-icon">⚠</span>
+                                <span>{{ exp.text }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                    {% else %}
+                        <p class="text-muted mb-0">No significant factors identified.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            {% if result.recommendations %}
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-lightbulb-fill me-1 text-primary"></i> Recommendations
+                </div>
+                <div class="card-body">
+                    {% if result.recommendations.top_3 %}
+                    <div class="mb-3">
+                        <div class="fw-bold text-dark mb-2">Today's Top 3</div>
+                        {% for tip in result.recommendations.top_3 %}
+                        <div class="recommendation-item">
+                            <span class="top3-badge">{{ loop.index }}</span>
+                            <span>{{ tip }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if result.recommendations.additional %}
+                    <div>
+                        <div class="fw-bold text-muted mb-2">Additional suggestions</div>
+                        {% for tip in result.recommendations.additional %}
+                        <div class="recommendation-item">
+                            <span class="rec-icon">•</span>
+                            <span>{{ tip }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="text-center mt-5">
+        <a href="{{ url_for('assess') }}" class="btn btn-primary btn-lg me-2" id="btn-retake">
+            <i class="bi bi-arrow-repeat me-1"></i> Take Again
+        </a>
+        <a href="{{ url_for('history') }}" class="btn btn-outline-secondary btn-lg" id="btn-view-history">
+            <i class="bi bi-clock-history me-1"></i> View History
+        </a>
+    </div>
+</div>
+{% endblock %}

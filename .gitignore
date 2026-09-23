@@ -1,0 +1,45 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# === Virtual environments ===
+venv/
+.venv/
+env/
+ENV/
+
+# === Distribution / packaging ===
+*.egg-info/
+dist/
+build/
+*.egg
+
+# === Environment variables ===
+.env
+.env.local
+
+# === Database (runtime artifact — regenerated on startup) ===
+*.db
+*.sqlite
+*.sqlite3
+
+# === ML model artifacts ===
+# Uncomment the line below if you do NOT want to commit trained models
+
+
+# === Jupyter ===
+.ipynb_checkpoints/
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === IDE ===
+.vscode/
+.idea/
+*.suo
+*.user
