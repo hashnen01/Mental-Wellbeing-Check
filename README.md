@@ -153,7 +153,17 @@ Each prediction includes **feature importance explanations** generated using SHA
 
 ## Screenshots
 
-*Run the application to see the UI.*
+### Home Page
+![Home Page](screenshots/home.png)
+
+### Wellbeing Assessment
+![Wellbeing Assessment](screenshots/assessment.png)
+
+### Assessment History
+![Assessment History](screenshots/history.png)
+
+### About & Machine Learning Summary
+![About & Machine Learning Summary](screenshots/about.png)
 
 ---
 
